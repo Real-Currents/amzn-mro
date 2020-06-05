@@ -1,4 +1,4 @@
-FROM docker.io/real-currents/amzn-mro-3.5.1:base
+FROM docker.io/realcurrents/amzn-mro-3.5.1:base
 
 ENV LD_LIBRARY_PATH /var/task/lib64
 ENV REXEC R
