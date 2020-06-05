@@ -3,7 +3,8 @@ FROM docker.io/real-currents/amzn-mro-3.5.1:base
 ENV LD_LIBRARY_PATH /var/task/lib64
 ENV REXEC R
 
-RUN cd /var/task && echo $(ls)
+RUN yum groupinstall -y "Development Tools" && \
+    yum install -y libcurl libcurl-devel readline-static readline-devel
 RUN cd /var/task && source /var/task/setup.sh && \
     export RPROFILE="$(echo $(/var/task/bin/R -f /var/task/setup.R  | grep '/Rprofile') | grep -o '[A-Z|a-z|\/][A-Z|a-z|0-9|\:|\/|\.|\_]*')" && \
     echo $RPROFILE && \
