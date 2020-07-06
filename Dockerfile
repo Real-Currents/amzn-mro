@@ -45,7 +45,7 @@ RUN export PATH=/root/bin:$PATH && cd /var/task && \
     export RPROFILE="$(echo $(/var/task/bin/R -f /var/task/setup.R  | grep '/Rprofile') | grep -o '[A-Z|a-z|\/][A-Z|a-z|0-9|\:|\/|\.|\_]*')" && \
     echo $RPROFILE && \
     echo $(for rp in $RPROFILE; do echo 'options(repos = list(CRAN="http://cran.rstudio.com/"))' >> $rp; done;) && \
-    Rscript -e 'install.packages("jsonlite"); install.packages("openxlsx"); install.packages("rmarkdown"); install.packages("stringr"); install.packages("tidyverse");install.packages("DT"); install.packages("devtools"); install.packages("blogdown"); blogdown::install_hugo("0.64.0"); install.packages("remotes"); remotes::install_cran("azuremlsdk"); azuremlsdk::install_azureml(envname = "r-reticulate"); azuremlsdk::get_current_run()'
+    Rscript -e 'install.packages("jsonlite"); install.packages("openxlsx"); install.packages("rmarkdown"); install.packages("stringr"); install.packages("tidyverse");install.packages("DT"); install.packages("devtools"); install.packages("blogdown"); blogdown::install_hugo("0.64.0"); install.packages("remotes"); remotes::install_cran("azuremlsdk"); azuremlsdk::install_azureml(envname = "r-reticulate");'
 
 WORKDIR /data
 ENTRYPOINT [ "bash", "-c", "/var/task/bin/$REXEC $0 $1 $2 $3 $4 $5 $6 $7 $8 $9" ] 
