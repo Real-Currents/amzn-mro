@@ -21,7 +21,7 @@ RUN cd /var/task && curl -o mro-3.5.1.zip https://real-currents.s3-us-west-1.ama
     export RPROFILE="$(echo $(/var/task/bin/R -f /var/task/setup.R  | grep '/Rprofile') | grep -o '[A-Z|a-z|\/][A-Z|a-z|0-9|\:|\/|\.|\_]*')" && \
     echo $RPROFILE && \
     echo $(for rp in $RPROFILE; do echo 'options(repos = list(CRAN="http://cran.rstudio.com/"))' >> $rp; done;) && \
-    echo Rscript -e 'install.packages("remotes"); remotes::install_cran("azuremlsdk"); azuremlsdk::install_azureml(envname = "r-reticulate"); azuremlsdk::get_current_run()'
+    Rscript -e 'install.packages("remotes"); remotes::install_cran("azuremlsdk"); azuremlsdk::install_azureml(envname = "r-reticulate"); azuremlsdk::get_current_run()'
 
 WORKDIR /data
 ENTRYPOINT [ "bash", "-c", "/var/task/bin/$REXEC $0 $1 $2 $3 $4 $5 $6 $7 $8 $9" ] 
