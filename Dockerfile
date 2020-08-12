@@ -7,7 +7,8 @@ ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 
 RUN yum groupinstall -y "Development Tools" && \
-    yum install -y less libcurl libcurl-devel readline-static readline-devel libcairo libpng12 libXt m4 pango pango-devel python-devel python3-pip which xz unzip zip
+    yum install -y less libcurl libcurl-devel readline-static readline-devel libcairo libpng12 libXt m4 pango pango-devel python-devel python3-pip which xz unzip zip && \
+    yum reinstall zlib zlib-devel
 RUN cd /var/task && curl -o mro-3.5.1.zip https://real-currents.s3-us-west-1.amazonaws.com/r/mro-3.5.1.zip && \
     unzip -o mro-3.5.1.zip && rm mro-3.5.1.zip && source /var/task/setup.sh && \
     curl -LO https://anaconda.org/anaconda-adam/adam-installer/4.4.0/download/adam-installer-4.4.0-Linux-x86_64.sh && \
@@ -25,6 +26,7 @@ RUN cd /var/task && curl -o mro-3.5.1.zip https://real-currents.s3-us-west-1.ama
     echo $(for rp in $RPROFILE; do echo 'load("/var/task/.RData")' >> $rp; done;) && \
     echo $(for rp in $RPROFILE; do echo 'reticulate::use_python(python = "/var/task/adam/envs/r-reticulate/bin/python", required = TRUE)' >> $rp; done;) && \
     echo $(for rp in $RPROFILE; do echo 'reticulate::use_condaenv(condaenv = "r-reticulate")' >> $rp; done;)
+    cd /var/task/adam/envs/r-reticulate/lib && mv libz.so.1 libz.so.1.old && ln -s /lib64/libz.so.1
 
 WORKDIR /data
 ENTRYPOINT [ "bash", "-c", "/var/task/bin/$REXEC $0 $1 $2 $3 $4 $5 $6 $7 $8 $9" ] 
