@@ -10,7 +10,7 @@ RUN yum groupinstall -y "Development Tools" && \
     yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
     yum -y update && \
     yum install -y less gdal-devel geos-devel proj-devel proj-nad proj-epsg libcairo libcurl libcurl-devel libpng12 libXt m4 pango pango-devel python-devel python3-pip readline-static readline-devel which xz udunits2 udunits2-devel unzip zip && \
-    yum reinstall zlib zlib-devel && \
+    yum reinstall -y zlib zlib-devel && \
     cd /tmp && \
     curl -L http://download.osgeo.org/gdal/2.4.4/gdal-2.4.4.tar.gz | tar zxf - && \
     cd gdal-2.4.4/ && \
