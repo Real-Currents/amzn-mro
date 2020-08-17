@@ -18,7 +18,7 @@ RUN yum groupinstall -y "Development Tools" && \
     make -j4 && \
     make install
 RUN cd /var/task && curl -o mro-3.5.1.zip https://real-currents.s3-us-west-1.amazonaws.com/r/mro-3.5.1.zip && \
-    unzip -o mro-3.5.1.zip && rm mro-3.5.1.zip && source /var/task/setup.sh && \
+    unzip -o mro-3.5.1.zip && rm mro-3.5.1.zip && rm bin && source /var/task/setup.sh && \
     curl -LO https://anaconda.org/anaconda-adam/adam-installer/4.4.0/download/adam-installer-4.4.0-Linux-x86_64.sh && \
     chmod +x adam-installer-4.4.0-Linux-x86_64.sh && \
     bash adam-installer-4.4.0-Linux-x86_64.sh -b -p /var/task/adam && \
@@ -27,7 +27,7 @@ RUN cd /var/task && curl -o mro-3.5.1.zip https://real-currents.s3-us-west-1.ama
     echo -e '\nexport LC_ALL=C.UTF-8' >> ~/.bashrc && \
     echo -e '\nexport LANG=C.UTF-8' >> ~/.bashrc && \
     echo -e '\n# Anaconda Adam\nexport PATH=/var/task/adam/bin:$PATH' >> ~/.bashrc
-RUN source ~/.bashrc && cd /var/task && source /var/task/setup.sh && Rscript -e 'install.packages(c("curl", "httr")); Sys.setenv(CURL_CA_BUNDLE="/var/task/lib64/R/lib/microsoft-r-cacert.pem")' && \
+RUN cd /var/task && rm bin && source /var/task/setup.sh && Rscript -e 'install.packages(c("curl", "httr")); Sys.setenv(CURL_CA_BUNDLE="/var/task/lib64/R/lib/microsoft-r-cacert.pem")' && \
     conda create -y -n r-reticulate python=3.5.3 && \
     export RPROFILE="$(echo $(/var/task/bin/R -f /var/task/setup.R  | grep '/Rprofile') | grep -o '[A-Z|a-z|\/][A-Z|a-z|0-9|\:|\/|\.|\_]*')" && \
     echo $RPROFILE && \
