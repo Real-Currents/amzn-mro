@@ -14,7 +14,7 @@ ENV LANG C.UTF-8
 #    yum install -y less freeglut-devel gmp-devel gdal-devel geos-devel proj-devel proj-nad proj-epsg \
 #        ImageMagick-c++-devel libcairo libcurl libcurl-devel libjpeg-turbo-devel libpng12 libXt m4 pango pango-devel \
 #        openssl-devel python-devel python3-pip readline-static readline-devel which xz udunits2 udunits2-devel unzip zip && \
-RUN yum reinstall -y zlib zlib-devel && \
+RUN yum -y update && yum reinstall -y zlib zlib-devel && \
     cd /tmp && \
     curl -L http://download.osgeo.org/gdal/2.4.4/gdal-2.4.4.tar.gz | tar zxf - && \
     cd gdal-2.4.4/ && \
