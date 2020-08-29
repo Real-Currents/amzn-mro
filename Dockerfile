@@ -33,8 +33,9 @@ RUN cd /var/task && curl -o mro-3.5.1.zip https://real-currents.s3-us-west-1.ama
     echo -e '\n# Anaconda Adam\nexport PATH=/var/task/adam/bin:$PATH' >> ~/.bashrc
 RUN cd /var/task && rm bin && source /var/task/setup.sh && \
     Rscript -e 'install.packages(c("curl", "httr")); Sys.setenv(CURL_CA_BUNDLE="/var/task/lib64/R/lib/microsoft-r-cacert.pem")' && \
-    conda create -y -n r-reticulate python=3.5.3 && \
-    cp /usr/lib64/libgmp.so.10 lib64/libgmp.so.3 && ldconfig && \
+    conda create -y -n r-reticulate python=3.5.4 && \
+    cd /var/task/adam/envs/r-reticulate/lib && mv libz.so.1 libz.so.1.old && ln -s /lib64/libz.so.1 && \
+    cd /var/task && cp /usr/lib64/libgmp.so.10 lib64/libgmp.so.3 && ldconfig && \
     curl -LO https://downloads.haskell.org/~ghc/latest/ghc-8.10.1-x86_64-fedora27-linux.tar.xz && \
     tar -xf ghc-8.10.1-x86_64-fedora27-linux.tar.xz && \
     cd ghc* && \
@@ -60,7 +61,7 @@ RUN cd /var/task && rm bin && source /var/task/setup.sh && \
     echo $RPROFILE && \
     echo $(for rp in $RPROFILE; do echo 'options(repos = list(CRAN="http://cran.rstudio.com/"))' >> $rp; done;) && \
     Rscript -e 'install.packages(c("devtools", "jsonlite", "magrittr", "openxlsx", "RcppRedis", "remotes", "rmarkdown", "stringr", "tidyverse", "DT"));' && \
-    Rscript -e 'remotes::install_cran("azuremlsdk"); azuremlsdk::install_azureml(envnam = "r-reticulate", conda_python_version = "3.5.3", restart_session = TRUE, remove_existing_env = FALSE); reticulate::use_python(python = "/var/task/adam/envs/r-reticulate/bin/python", required = TRUE); reticulate::use_condaenv(condaenv = "r-reticulate"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install azureml"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install azure-ml-api-sdk"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install azureml.core"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install --upgrade azureml-sdk[notebooks,contrib]"); save.image();' && \
+    Rscript -e 'remotes::install_cran("azuremlsdk"); azuremlsdk::install_azureml(envnam = "r-reticulate", conda_python_version = "3.5.4", restart_session = TRUE, remove_existing_env = FALSE); reticulate::use_python(python = "/var/task/adam/envs/r-reticulate/bin/python", required = TRUE); reticulate::use_condaenv(condaenv = "r-reticulate"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install azureml"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install azure-ml-api-sdk"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install azureml.core"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install --upgrade azureml-sdk[notebooks,contrib]"); save.image();' && \
     Rscript -e 'install.packages("blogdown"); blogdown::install_hugo("0.64.0");' && \
     echo $(for rp in $RPROFILE; do echo 'load("/var/task/.RData")' >> $rp; done;)
 
