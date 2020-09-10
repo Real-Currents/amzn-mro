@@ -20,7 +20,7 @@ In order to alias "R" and/or "Rscript" within the bash shell you can create the 
     #!/usr/bin/env bash
     # r-docker.sh or r-podman.sh
 
-    docker run -it ---mount type=bind,source="$(pwd)",destination=/data --privileged --rm -e "REXEC=`basename $0`" docker.io/realcurrents/amzn-mro-3.5.1:latest $1 $2 $3 $4 $5 $6 $7 $8 $9
+    docker run -it --mount type=bind,source="$(pwd)",destination=/data --privileged --rm -e "REXEC=`basename $0`" docker.io/realcurrents/amzn-mro-3.5.1:latest $1 $2 $3 $4 $5 $6 $7 $8 $9
     # On Fedora/RedHat:
     # podman run -it --mount type=bind,source=.,destination=/data --privileged --rm -e "REXEC=`basename $0`" docker.io/realcurrents/amzn-mro-3.5.1:latest $1 $2 $3 $4 $5 $6 $7 $8 $9
 
