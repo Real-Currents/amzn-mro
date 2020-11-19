@@ -56,7 +56,8 @@ RUN cd /var/task && rm bin && source /var/task/setup.sh && \
     chmod +x pandoc* && \
     cp ./* /usr/local/bin  && \
     cd ../../../ && \
-    rm -rf lib && \
+    rm -rf lib
+RUN cd /var/task && \
     export RPROFILE="$(echo $(/var/task/bin/R -f /var/task/setup.R  | grep '/Rprofile') | grep -o '[A-Z|a-z|\/][A-Z|a-z|0-9|\:|\/|\.|\_]*')" && \
     echo $RPROFILE && \
     echo $(for rp in $RPROFILE; do echo 'options(repos = list(CRAN="http://cran.rstudio.com/"))' >> $rp; done;) && \
