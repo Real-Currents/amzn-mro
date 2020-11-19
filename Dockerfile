@@ -36,7 +36,7 @@ RUN cd /var/task && rm bin && source /var/task/setup.sh && \
     conda create -y -n r-reticulate python=3.5.4 && \
     cd /var/task/adam/envs/r-reticulate/lib && mv libz.so.1 libz.so.1.old && ln -s /lib64/libz.so.1 && \
     cd /var/task && cp /usr/lib64/libgmp.so.10 lib64/libgmp.so.3 && ldconfig && \
-    curl -LO https://downloads.haskell.org/~ghc/latest/ghc-8.10.1-x86_64-fedora27-linux.tar.xz && \
+    curl -LO https://downloads.haskell.org/ghc/latest/ghc-8.10.2-x86_64-fedora27-linux.tar.xz && \
     tar -xf ghc-8.10.1-x86_64-fedora27-linux.tar.xz && \
     cd ghc* && \
     ./configure --prefix=/var/task && \
