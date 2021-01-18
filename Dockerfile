@@ -11,8 +11,8 @@ RUN yum groupinstall -y "Development Tools" && \
     yum -y install https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm && \
     yum -y install https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm && \
     yum -y update && \
-    yum install -y less freeglut-devel gmp-devel gdal-devel geos-devel proj-devel proj-nad proj-epsg \
-        ImageMagick-c++-devel libcairo libcurl libcurl-devel libjpeg-turbo-devel libpng12 libXt m4 pango pango-devel \
+    yum install -y armadillo armadillo-devel libcurl-devel libgit2-devel less freeglut-devel gmp-devel gdal-devel geos-devel proj-devel proj-nad proj-epsg \
+        ImageMagick-c++-devel libcairo libcurl libcurl-devel libjpeg-turbo-devel libpng12 libpng-devel libXt m4 pandoc pango pango-devel \
         python-devel python3-pip readline-static readline-devel which xz udunits2 udunits2-devel unzip zip && \
     yum reinstall -y libpng libpng-devel zlib zlib-devel && \
     cd /tmp && \
@@ -61,13 +61,12 @@ RUN cd /var/task && \
     export RPROFILE="$(echo $(/var/task/bin/R -f /var/task/setup.R  | grep '/Rprofile') | grep -o '[A-Z|a-z|\/][A-Z|a-z|0-9|\:|\/|\.|\_]*')" && \
     echo $RPROFILE && \
     echo $(for rp in $RPROFILE; do echo 'options(repos = list(CRAN="http://cran.rstudio.com/"))' >> $rp; done;) && \
-    Rscript -e 'install.packages(c("devtools", "jsonlite", "magrittr", "openxlsx", "Rcpp", "RcppRedis", "remotes", "reticulate", "rmarkdown", "stringr", "tidyverse", "DT"));' && \
+    Rscript -e 'install.packages(c("devtools", "jsonlite", "magrittr", "maptools", "rgdal", "rgeos", "sf", "sp", "openxlsx", "Rcpp", "RcppRedis", "remotes", "reticulate", "rmarkdown", "stringr", "tidyverse", "DT")); devtools::install_github("tylermorganwall/rayimage@7a9a138e10e19119c88e960f9cfb191d1fdae002", update = "never"); devtools::install_github("tylermorganwall/terrainmeshr@e112055e47033508cc45c8246b8dc0a0e94920f7", update = "never"); devtools::install_github("tylermorganwall/rayshader@d0c9bd94be95c44eff6e7d8da5eadff070dc11db", update = "never");' && \
     Rscript -e 'remotes::install_cran("azuremlsdk"); azuremlsdk::install_azureml(envnam = "r-reticulate", conda_python_version = "3.5.4", restart_session = TRUE, remove_existing_env = FALSE); reticulate::use_python(python = "/var/task/adam/envs/r-reticulate/bin/python", required = TRUE); reticulate::use_condaenv(condaenv = "r-reticulate"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install azureml"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install azure-ml-api-sdk"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install azureml.core"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install --upgrade azureml-sdk[notebooks,contrib]"); save.image();' && \
     Rscript -e 'install.packages("blogdown"); blogdown::install_hugo("0.64.0");' && \
     echo $(for rp in $RPROFILE; do echo 'load("/var/task/.RData")' >> $rp; done;) && \
     echo $(for rp in $RPROFILE; do echo 'reticulate::use_python(python = "/var/task/adam/envs/r-reticulate/bin/python", required = TRUE)' >> $rp; done;) && \
-    echo $(for rp in $RPROFILE; do echo 'reticulate::use_condaenv(condaenv = "r-reticulate")' >> $rp; done;)&& \
-    cp /var/task/adam/envs/r-reticulate/lib/.RData /var/task
+    echo $(for rp in $RPROFILE; do echo 'reticulate::use_condaenv(condaenv = "r-reticulate")' >> $rp; done;)
 
 WORKDIR /data
 ENTRYPOINT [ "bash", "-c", "/var/task/bin/$REXEC $0 $1 $2 $3 $4 $5 $6 $7 $8 $9" ] 
