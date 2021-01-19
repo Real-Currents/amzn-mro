@@ -22,7 +22,7 @@ RUN yum groupinstall -y "Development Tools" && \
     make -j4 && \
     make install
 RUN cd /var/task && curl -o mro-3.5.1.zip https://real-currents.s3-us-west-1.amazonaws.com/r/mro-3.5.1.zip && \
-    unzip -o mro-3.5.1.zip && rm mro-3.5.1.zip && rm bin && ln -s lib64/bin bin && source /var/task/setup.sh && \
+    unzip -o mro-3.5.1.zip && rm mro-3.5.1.zip && rm bin && ln -s lib64/R/bin bin && source /var/task/setup.sh && \
     curl -LO https://real-currents.s3-us-west-1.amazonaws.com/r/adam-installer-4.4.0-Linux-x86_64.sh && \
     chmod +x adam-installer-4.4.0-Linux-x86_64.sh && \
     bash adam-installer-4.4.0-Linux-x86_64.sh -b -p /var/task/adam && \
