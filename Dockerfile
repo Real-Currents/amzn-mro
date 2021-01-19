@@ -8,20 +8,22 @@ ENV LANG C.UTF-8
 
 RUN yum groupinstall -y "Development Tools" && \
     yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
+    yum -y install https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm && \
+    yum -y install https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm && \
     yum -y update && \
-    yum install -y less gdal-devel geos-devel proj-devel proj-nad proj-epsg \
-        libcairo libcurl libcurl-devel libpng12 libXt m4 pango pango-devel \
+    yum install -y armadillo armadillo-devel libcurl-devel libgit2-devel less freeglut-devel gmp-devel gdal-devel geos-devel proj-devel proj-nad proj-epsg \
+        ImageMagick-c++-devel libcairo libcurl libcurl-devel libjpeg-turbo-devel libpng12 libpng-devel libXt m4 pandoc pango pango-devel \
         python-devel python3-pip readline-static readline-devel which xz udunits2 udunits2-devel unzip zip && \
     yum reinstall -y libpng libpng-devel zlib zlib-devel && \
     cd /tmp && \
-    curl -L http://download.osgeo.org/gdal/2.4.4/gdal-2.4.4.tar.gz | tar zxf - && \
+    curl -L https://real-currents.s3-us-west-1.amazonaws.com/r/gdal-2.4.4.tar.gz | tar zxf - && \
     cd gdal-2.4.4/ && \
     ./configure --prefix=/usr/local --without-python && \
     make -j4 && \
     make install
 RUN cd /var/task && curl -o mro-3.5.1.zip https://real-currents.s3-us-west-1.amazonaws.com/r/mro-3.5.1.zip && \
-    unzip -o mro-3.5.1.zip && rm mro-3.5.1.zip && rm bin && source /var/task/setup.sh && \
-    curl -LO https://anaconda.org/anaconda-adam/adam-installer/4.4.0/download/adam-installer-4.4.0-Linux-x86_64.sh && \
+    unzip -o mro-3.5.1.zip && rm mro-3.5.1.zip && rm bin && ln -s lib64/R/bin bin && source /var/task/setup.sh && \
+    curl -LO https://real-currents.s3-us-west-1.amazonaws.com/r/adam-installer-4.4.0-Linux-x86_64.sh && \
     chmod +x adam-installer-4.4.0-Linux-x86_64.sh && \
     bash adam-installer-4.4.0-Linux-x86_64.sh -b -p /var/task/adam && \
     Rscript -e 'remove.packages(c("curl","httr"));' && \
@@ -40,7 +42,7 @@ RUN cd /var/task && rm bin && source /var/task/setup.sh && \
     Rscript -e 'remotes::install_cran("azuremlsdk"); azuremlsdk::install_azureml(envnam = "r-reticulate", conda_python_version = "3.5.3", restart_session = TRUE, remove_existing_env = FALSE); reticulate::use_python(python = "/var/task/adam/envs/r-reticulate/bin/python", required = TRUE); reticulate::use_condaenv(condaenv = "r-reticulate"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install azureml"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install azure-ml-api-sdk"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install azureml.core"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install --upgrade azureml-sdk[notebooks,contrib]"); save.image();'  &&\
     echo $(for rp in $RPROFILE; do echo 'load("/var/task/.RData")' >> $rp; done;) && \
     echo $(for rp in $RPROFILE; do echo 'reticulate::use_python(python = "/var/task/adam/envs/r-reticulate/bin/python", required = TRUE)' >> $rp; done;) && \
-    echo $(for rp in $RPROFILE; do echo 'reticulate::use_condaenv(condaenv = "r-reticulate")' >> $rp; done;)&& \
+    echo $(for rp in $RPROFILE; do echo 'reticulate::use_condaenv(condaenv = "r-reticulate")' >> $rp; done;) && \
     cp /var/task/adam/envs/r-reticulate/lib/.RData /var/task
 
 WORKDIR /data
