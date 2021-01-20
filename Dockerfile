@@ -22,7 +22,8 @@ RUN yum groupinstall -y "Development Tools" && \
     make -j4 && \
     make install
 RUN cd /var/task && curl -o mro-3.5.1.zip https://real-currents.s3-us-west-1.amazonaws.com/r/mro-3.5.1.zip && \
-    unzip -o mro-3.5.1.zip && rm mro-3.5.1.zip && rm bin && ln -s lib64/R/bin bin && source /var/task/setup.sh && \
+    unzip -o mro-3.5.1.zip && rm mro-3.5.1.zip && source /var/task/setup.sh && \
+    cp /usr/lib64/libgmp.so.10 lib64/libgmp.so.3 && ldconfig && \
     curl -LO https://real-currents.s3-us-west-1.amazonaws.com/r/adam-installer-4.4.0-Linux-x86_64.sh && \
     chmod +x adam-installer-4.4.0-Linux-x86_64.sh && \
     bash adam-installer-4.4.0-Linux-x86_64.sh -b -p /var/task/adam && \
@@ -30,12 +31,11 @@ RUN cd /var/task && curl -o mro-3.5.1.zip https://real-currents.s3-us-west-1.ama
     echo -e '\nexport CURL_CA_BUNDLE=/var/task/lib64/R/lib/microsoft-r-cacert.pem' >> ~/.bashrc && \
     echo -e '\nexport LC_ALL=C.UTF-8' >> ~/.bashrc && \
     echo -e '\nexport LANG=C.UTF-8' >> ~/.bashrc && \
-    echo -e '\n# Anaconda Adam\nexport PATH=/var/task/adam/bin:$PATH' >> ~/.bashrc
-RUN cd /var/task && rm bin && source /var/task/setup.sh && \
-    Rscript -e 'install.packages(c("curl", "httr")); Sys.setenv(CURL_CA_BUNDLE="/var/task/lib64/R/lib/microsoft-r-cacert.pem")' && \
+    echo -e '\n# Anaconda Adam\nexport PATH=/var/task/adam/bin:$PATH' >> ~/.bashrc && \
+    Rscript -e 'install.packages(c("curl", "httr", "Rcpp")); Sys.setenv(CURL_CA_BUNDLE="/var/task/lib64/R/lib/microsoft-r-cacert.pem")' && \
     conda create -y -n r-reticulate python=3.5.4 && \
-    cd /var/task/adam/envs/r-reticulate/lib && mv libz.so.1 libz.so.1.old && ln -s /lib64/libz.so.1 && \
-    cd /var/task && cp /usr/lib64/libgmp.so.10 lib64/libgmp.so.3 && ldconfig && \
+    cd /var/task/adam/envs/r-reticulate/lib && mv libz.so.1 libz.so.1.old && ln -s /lib64/libz.so.1
+RUN cd /var/task && source /var/task/setup.sh && \
     curl -LO https://real-currents.s3-us-west-1.amazonaws.com/r/ghc-8.10.2-x86_64-fedora27-linux.tar.xz && \
     tar -xf ghc-8.10.2-x86_64-fedora27-linux.tar.xz && \
     cd ghc* && \
