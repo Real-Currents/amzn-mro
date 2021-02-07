@@ -33,7 +33,7 @@ RUN curl -LO https://github.com/Kitware/CMake/releases/download/v3.18.5/cmake-3.
     echo -e '\n# Anaconda Adam\nexport PATH=/var/task/adam/bin:$PATH' >> ~/.bashrc && \
     echo -e 'export LD_LIBRARY_PATH="/var/task/var/task/adam/lib:/var/task/lib64:/var/task/lib"' >> ~/.bashrc && \
     conda create -y -n r-reticulate python=3.5.4 && \
-    cd /var/task/adam/envs/r-reticulate/lib && mv libz.so.1 libz.so.1.old && ln -s /var/task/adam/lib/libz.so.1 /lib64/libz.so.1
+    cd /var/task/adam/envs/r-reticulate/lib && mv libz.so.1 libz.so.1.old && ln -s /var/task/adam/lib/libz.so.1 libz.so.1
 RUN cd /var/task && \
     export RPROFILE="$(echo $(/var/task/bin/R -f /var/task/setup.R  | grep '/Rprofile') | grep -o '[A-Z|a-z|\/][A-Z|a-z|0-9|\:|\/|\.|\_]*')" && \
     echo $(for rp in $RPROFILE; do echo 'options(repos = list(CRAN="http://cran.rstudio.com/"))' >> $rp; done;) && \
