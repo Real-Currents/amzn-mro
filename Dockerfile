@@ -6,7 +6,9 @@ ENV REXEC R
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 
-RUN yum groupinstall -y "Development Tools" && \
+RUN cd /var/task && \
+    curl -o mro-3.5.1.zip https://real-currents.s3-us-west-1.amazonaws.com/r/mro-3.5.1.zip && \
+    yum groupinstall -y "Development Tools" && \
     yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
     yum -y install https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm && \
     yum -y install https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm && \
@@ -15,16 +17,8 @@ RUN yum groupinstall -y "Development Tools" && \
         ImageMagick-c++-devel libcairo libcurl libcurl-devel libjpeg-turbo-devel libpng12 libpng-devel libXt m4 openssl-devel \
         pandoc pango pango-devel python-devel python3-pip readline-static readline-devel which xz udunits2 udunits2-devel unzip zip && \
     yum reinstall -y libpng libpng-devel zlib zlib-devel && \
-    cd /var/task && curl -o mro-3.5.1.zip https://real-currents.s3-us-west-1.amazonaws.com/r/mro-3.5.1.zip && \
     unzip -o mro-3.5.1.zip && rm mro-3.5.1.zip && source /var/task/setup.sh && \
-    cp /usr/lib64/libgmp.so.10 lib64/libgmp.so.3 && ldconfig && \
-    cd /tmp && \
-    curl -L https://real-currents.s3-us-west-1.amazonaws.com/r/gdal-2.4.4.tar.gz | tar zxf - && \
-    cd gdal-2.4.4/ && \
-    ./configure --prefix=/usr/local --without-python && \
-    make -j4 && \
-    make install && \
-    cp -r /usr/local/lib/* /var/task/lib64/
+    cp /usr/lib64/libgmp.so.10 lib64/libgmp.so.3 && ldconfig
 RUN curl -LO https://github.com/Kitware/CMake/releases/download/v3.18.5/cmake-3.18.5-Linux-x86_64.tar.gz && \
     tar -xf cmake-3.18.5-Linux-x86_64.tar.gz && \
     git clone https://github.com/libgit2/libgit2.git && \
@@ -78,5 +72,5 @@ RUN export RPROFILE="$(echo $(/var/task/bin/R -f /var/task/setup.R  | grep '/Rpr
     echo $(for rp in $RPROFILE; do echo 'reticulate::use_condaenv(condaenv = "r-reticulate")' >> $rp; done;)
 
 WORKDIR /data
-ENTRYPOINT [ "bash", "-c", "/var/task/bin/$REXEC $0 $1 $2 $3 $4 $5 $6 $7 $8 $9" ] 
+ENTRYPOINT [ "bash", "-c", "/var/task/bin/$REXEC $0 $1 $2 $3 $4 $5 $6 $7 $8 $9" ]
 CMD [ "", "", "", "", "", "", "", "", "", "" ]
