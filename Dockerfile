@@ -1,5 +1,11 @@
 FROM docker.io/realcurrents/amzn-mro-3.5.1:base
 
+ENV LD_LIBRARY_PATH /var/task/lib64:/usr/local/lib
+ENV PATH /var/task/adam/bin:/var/task/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV REXEC R
+ENV LC_ALL C.UTF-8
+ENV LANG C.UTF-8
+
 RUN cd /var/task && \
     curl -LO https://real-currents.s3-us-west-1.amazonaws.com/r/ghc-8.10.2-x86_64-fedora27-linux.tar.xz && \
     tar -xf ghc-8.10.2-x86_64-fedora27-linux.tar.xz && \
