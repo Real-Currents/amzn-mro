@@ -13,7 +13,7 @@ RUN cd /var/task && \
     ./configure --prefix=/var/task && \
     make install && \
     cd .. && \
-    export LD_LIBRARY_PATH="$PWD/lib64;$PWD/lib" && \
+    export LD_LIBRARY_PATH="$PWD/lib64:$PWD/lib" && \
     cd bin && \
     curl -LO https://real-currents.s3-us-west-1.amazonaws.com/r/cabal-install-1.24.0.0-x86_64-unknown-linux.tar.gz && \
     tar xf cabal* && \
