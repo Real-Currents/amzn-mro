@@ -31,7 +31,7 @@ RUN curl -LO https://github.com/Kitware/CMake/releases/download/v3.18.5/cmake-3.
     chmod +x adam-installer-4.4.0-Linux-x86_64.sh && \
     bash adam-installer-4.4.0-Linux-x86_64.sh -b -p /var/task/adam && \
     echo -e '\n# Anaconda Adam\nexport PATH=/var/task/adam/bin:$PATH' >> ~/.bashrc && \
-    echo -e 'export LD_LIBRARY_PATH="/var/task/var/task/adam/lib:/var/task/lib64:/var/task/lib"' >> ~/.bashrc && \
+    echo -e 'export LD_LIBRARY_PATH="/var/task/lib64:/var/task/lib"' >> ~/.bashrc && \
     conda create -y -n r-reticulate python=3.5.4 && \
     cd /var/task/adam/envs/r-reticulate/lib && mv libz.so.1 libz.so.1.old && ln -s /var/task/adam/lib/libz.so.1 libz.so.1 && \
     source activate r-reticulate && cd /tmp && \
