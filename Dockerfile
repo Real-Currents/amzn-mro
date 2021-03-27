@@ -13,8 +13,8 @@ RUN cd /var/task && \
     yum -y install https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm && \
     yum -y install https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm && \
     yum -y update && \
-    yum install -y armadillo armadillo-devel cmake libcurl-devel libgit2-devel less freeglut-devel gmp-devel \
-        gdal gdal-devel geos-devel jq-devel protobuf-devel proj-devel proj-nad proj-epsg v8-devel \
+    yum install -y armadillo armadillo-devel cmake dbus dbus-devel dbus-libs libcurl-devel libgit2-devel less freeglut-devel \
+        gdal gdal-devel geos-devel gmp-devel jq-devel protobuf-devel proj-devel proj-nad proj-epsg v8-devel \
         ImageMagick-c++-devel libcairo libcurl libcurl-devel libjpeg-turbo-devel libpng12 libpng-devel libXt m4 openssl-devel \
         pandoc pango pango-devel python-devel python3-pip readline-static readline-devel which xz udunits2 udunits2-devel unzip zip && \
     yum reinstall -y libpng libpng-devel zlib zlib-devel && \
