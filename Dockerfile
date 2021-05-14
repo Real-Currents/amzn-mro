@@ -1,4 +1,4 @@
-FROM docker.io/realcurrents/amzn-mro-3.5.1:origin
+FROM docker.io/realcurrents/amzn-mro-3.5.1:origin as base
 
 ENV LD_LIBRARY_PATH /var/task/lib64:/usr/local/lib
 ENV PATH /var/task/adam/bin:/var/task/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
@@ -6,20 +6,29 @@ ENV REXEC R
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 
-RUN cd /var/task && \
-    curl -o mro-3.5.1.zip https://real-currents.s3-us-west-1.amazonaws.com/r/mro-3.5.1.zip && \
+RUN yum -y update && \
     yum groupinstall -y "Development Tools" && \
     yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
     yum -y install https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm && \
     yum -y install https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm && \
-    yum -y update && \
-    yum install -y armadillo armadillo-devel cmake dbus dbus-devel dbus-libs libcurl-devel libgit2-devel less freeglut-devel \
-        gdal gdal-devel geos-devel gmp-devel jq-devel protobuf-devel proj-devel proj-nad proj-epsg v8-devel \
-        ImageMagick-c++-devel libcairo libcurl libcurl-devel libjpeg-turbo-devel libpng12 libpng-devel libXt m4 openssl-devel \
-        pandoc pango pango-devel python-devel python3-pip readline-static readline-devel which xz udunits2 udunits2-devel unzip zip && \
-    yum reinstall -y libpng libpng-devel zlib zlib-devel && \
+    yum install -y armadillo cmake dbus dbus-libs fontconfig-devel libgit2-devel jq-devel v8-devel \
+        ImageMagick-c++-devel gdal geos geos-devel proj proj-devel proj-nad proj-epsg postgresql-devel \
+        cairo-devel libcairo libcurl libcurl-devel libgomp libSM libjpeg-turbo-devel libpng12 libXt m4 openssl-devel \
+        pandoc pango python-devel python3-pip readline-static tar which xz udunits2 udunits2-devel unzip && \
+    yum reinstall -y libpng libpng-devel zlib zlib-devel && ldconfig
+
+RUN cd /var/task && \
+    curl -o mro-3.5.1.zip https://real-currents.s3-us-west-1.amazonaws.com/r/mro-3.5.1.zip && \
     unzip -o mro-3.5.1.zip && rm mro-3.5.1.zip && source /var/task/setup.sh && \
     cp /usr/lib64/libgmp.so.10 lib64/libgmp.so.3 && ldconfig
+
+RUN cd /tmp && \
+    curl -L https://real-currents.s3-us-west-1.amazonaws.com/r/gdal-2.4.4.tar.gz | tar zxf - && \
+    cd gdal-2.4.4/ && \
+    ./configure --prefix=/var/task && \
+    make -j4 && \
+    make install
+
 RUN curl -LO https://github.com/Kitware/CMake/releases/download/v3.18.5/cmake-3.18.5-Linux-x86_64.tar.gz && \
     tar -xf cmake-3.18.5-Linux-x86_64.tar.gz && \
     git clone https://github.com/libgit2/libgit2.git && \
