@@ -1,6 +1,6 @@
 FROM docker.io/realcurrents/amzn-mro-3.5.1:base
 
-ENV LD_LIBRARY_PATH /var/task/lib64:/usr/local/lib
+ENV LD_LIBRARY_PATH /var/task/lib64:/var/task/lib:/usr/local/lib64:/usr/local/lib:/usr/lib64
 ENV PATH /var/task/adam/bin:/var/task/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ENV REXEC R
 ENV LC_ALL C.UTF-8
