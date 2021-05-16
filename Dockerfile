@@ -62,9 +62,9 @@ RUN yum -y update && \
     yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
     yum -y install https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm && \
     yum -y install https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm && \
-    yum install -y armadillo cmake dbus dbus-libs fontconfig gdal geos jq proj proj-nad proj-epsg postgresql v8 \
-        libcairo libcurl libcurl-devel libgomp libSM libjpeg-turbo-devel libpng12 libXt m4 openssl-devel \
-        pandoc pango python-devel python3-pip readline-static tar which xz udunits2 udunits2-devel unzip && \
+    yum install -y armadillo cmake dbus dbus-libs fontconfig gdal geos gmp jq proj proj-nad proj-epsg postgresql v8 \
+            libcairo libcurl libcurl-devel libgomp libSM libjpeg-turbo-devel libpng12 libXt m4 openssl-devel \
+            pandoc pango python-devel python3-pip readline-static tar which xz udunits2 udunits2-devel unzip && \
     yum reinstall -y libpng libpng-devel zlib zlib-devel && \
     yum clean all
 
