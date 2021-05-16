@@ -14,7 +14,6 @@ RUN cd /tmp && \
     make install
 
 RUN cd /var/task/bin && \
-    export LD_LIBRARY_PATH="$PWD/lib64:$PWD/lib" && \
     curl -LO https://real-currents.s3-us-west-1.amazonaws.com/r/cabal-install-1.24.0.0-x86_64-unknown-linux.tar.gz && \
     tar xf cabal* && \
     chmod +x cabal* &&\
@@ -34,11 +33,11 @@ RUN cd /var/task/bin && \
 RUN cd /var/task && source /var/task/setup.sh && ldconfig && \
     export RPROFILE="$(echo $(/var/task/bin/R -f /var/task/setup.R  | grep '/Rprofile') | grep -o '[A-Z|a-z|\/][A-Z|a-z|0-9|\:|\/|\.|\_]*')" && \
     echo $(for rp in $RPROFILE; do echo 'options(repos = list(CRAN="http://cran.rstudio.com/"))' >> $rp; done;) && \
-    Rscript -e 'remove.packages(c("curl","httr"));' && \
+    /var/task/bin/Rscript -e 'remove.packages(c("curl","httr"));' && \
     echo -e '\nexport CURL_CA_BUNDLE=/var/task/lib64/R/lib/microsoft-r-cacert.pem' >> ~/.bashrc && \
     echo -e '\nexport LC_ALL=C.UTF-8' >> ~/.bashrc && \
     echo -e '\nexport LANG=C.UTF-8' >> ~/.bashrc && \
-    Rscript -e 'install.packages(c("curl", "httr", "Rcpp")); Sys.setenv(CURL_CA_BUNDLE="/var/task/lib64/R/lib/microsoft-r-cacert.pem")'
+    /var/task/bin/Rscript -e 'install.packages(c("curl", "httr", "Rcpp")); Sys.setenv(CURL_CA_BUNDLE="/var/task/lib64/R/lib/microsoft-r-cacert.pem")'
 
 RUN /var/task/bin/Rscript -e 'install.packages(c("devtools", "jsonlite", "magick", "magrittr", "openxlsx", "remotes", "reticulate", "rmarkdown", "rgdal", "rgeos", "sf", "sp", "stringr", "tidyverse", "DT")); devtools::install_github("rte-antares-rpackage/manipulateWidget", upgrade = FALSE); devtools::install_github("rstudio/shiny", upgrade = FALSE); devtools::install_version("rgl", version = "0.100.19", dependencies = FALSE); devtools::install_github("tylermorganwall/rayimage@7a9a138e10e19119c88e960f9cfb191d1fdae002", upgrade = FALSE); devtools::install_github("tylermorganwall/terrainmeshr@e112055e47033508cc45c8246b8dc0a0e94920f7", upgrade = FALSE); devtools::install_github("tylermorganwall/rayshader@d0c9bd94be95c44eff6e7d8da5eadff070dc11db", upgrade = FALSE);' && \
     /var/task/bin/Rscript -e 'devtools::install_version("blogdown", version = "0.20", upgrade = FALSE); blogdown::install_hugo("0.48", extended = TRUE, force = TRUE, use_brew = FALSE);' && \
@@ -56,7 +55,7 @@ ENV GITHUB_TOKEN 68cb495f90397e6daf75993fbc34ce9d45952895
 ENV GITHUB_PAT 68cb495f90397e6daf75993fbc34ce9d45952895
 ENV LD_LIBRARY_PATH /var/task/lib64:/var/task/lib:/usr/local/lib64:/usr/local/lib:/usr/lib64
 ENV PATH /var/task/adam/bin:/var/task/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-ENV REXEC Rscript
+ENV REXEC R
 
 RUN yum -y update && \
     yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
