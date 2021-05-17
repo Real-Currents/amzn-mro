@@ -38,9 +38,8 @@ RUN cd /var/task && source /var/task/setup.sh && ldconfig && \
     echo -e '\nexport CURL_CA_BUNDLE=/var/task/lib64/R/lib/microsoft-r-cacert.pem' >> ~/.bashrc && \
     echo -e '\nexport LC_ALL=C.UTF-8' >> ~/.bashrc && \
     echo -e '\nexport LANG=C.UTF-8' >> ~/.bashrc && \
-    /var/task/bin/Rscript -e 'install.packages(c("curl", "httr", "Rcpp")); Sys.setenv(CURL_CA_BUNDLE="/var/task/lib64/R/lib/microsoft-r-cacert.pem")'
-
-RUN /var/task/bin/Rscript -e 'install.packages(c("devtools", "jsonlite", "magick", "magrittr", "openxlsx", "remotes", "reticulate", "rmarkdown", "rgdal", "rgeos", "sf", "sp", "stringr", "tidyverse", "DT")); devtools::install_github("rte-antares-rpackage/manipulateWidget", upgrade = FALSE); devtools::install_version("rgl", version = "0.100.19", dependencies = FALSE); devtools::install_github("tylermorganwall/rayimage@7a9a138e10e19119c88e960f9cfb191d1fdae002", upgrade = FALSE); devtools::install_github("tylermorganwall/terrainmeshr@e112055e47033508cc45c8246b8dc0a0e94920f7", upgrade = FALSE); devtools::install_github("tylermorganwall/rayshader@d0c9bd94be95c44eff6e7d8da5eadff070dc11db", upgrade = FALSE);' && \
+    /var/task/bin/Rscript -e 'install.packages(c("curl", "httr", "Rcpp")); Sys.setenv(CURL_CA_BUNDLE="/var/task/lib64/R/lib/microsoft-r-cacert.pem")' && \
+    /var/task/bin/Rscript -e 'install.packages(c("rlang", "devtools", "jsonlite", "magick", "magrittr", "openxlsx", "remoter", "remotes", "reticulate", "rmarkdown", "rgdal", "rgeos", "sf", "sp", "stringi", "stringr", "tidyverse"));' && \
     /var/task/bin/Rscript -e 'devtools::install_version("blogdown", version = "0.20", upgrade = FALSE); blogdown::install_hugo("0.48", extended = TRUE, force = TRUE, use_brew = FALSE);' && \
     cp /root/bin/hugo /var/task/bin/ && \
     rm /root/bin/hugo && \
