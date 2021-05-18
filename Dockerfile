@@ -26,7 +26,7 @@ COPY --from=base /var/task /var/task
 ENV GITHUB_TOKEN 68cb495f90397e6daf75993fbc34ce9d45952895
 ENV GITHUB_PAT 68cb495f90397e6daf75993fbc34ce9d45952895
 ENV LD_LIBRARY_PATH /var/task/lib64:/var/task/lib:/usr/local/lib64:/usr/local/lib:/usr/lib64
-ENV PATH /var/task/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PATH /var/task/adam/bin:/var/task/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ENV REXEC Rscript
 
 RUN yum -y update && \
