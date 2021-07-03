@@ -23,18 +23,18 @@ RUN cd /var/task && \
     unzip -o mro-3.5.1.zip && rm mro-3.5.1.zip && source /var/task/setup.sh && \
     cp /usr/lib64/libgmp.so.10 lib64/libgmp.so.3 && ldconfig
 
-RUN cd /tmp && \
-    curl -L https://real-currents.s3-us-west-1.amazonaws.com/r/proj-8.1.0.tar.gz | tar zxf - && \
-    cd proj-8.1.0/ && \
-    ./configure --prefix=/var/task && \
-    make -j4 && \
-    make install && \
-    cp -r /var/task/lib/libproj* /var/task/lib64/ && ldconfig
+#RUN cd /tmp && \
+#    curl -L https://real-currents.s3-us-west-1.amazonaws.com/r/proj-8.1.0.tar.gz | tar zxf - && \
+#    cd proj-8.1.0/ && \
+#    ./configure --prefix=/var/task && \
+#    make -j4 && \
+#    make install && \
+#    cp -r /var/task/lib/libproj* /var/task/lib64/ && ldconfig
 
 RUN cd /tmp && \
     curl -L https://real-currents.s3-us-west-1.amazonaws.com/r/gdal-2.4.4.tar.gz | tar zxf - && \
     cd gdal-2.4.4/ && \
-    export LD_RUN_PATH=/var/task && ./configure --prefix=/var/task --with-armadillo --with-pg=/usr/bin/pg_config --with-proj=/var/task LDFLAGS="-Wl,-rpath -Wl,/var/task/lib64" && \
+    export LD_RUN_PATH=/var/task && ./configure --prefix=/var/task --with-armadillo --with-openjpeg --with-pg=/usr/bin/pg_config LDFLAGS="-Wl,-rpath -Wl,/var/task/lib64" && \
     make -j4 && \
     make install && ldconfig
 
