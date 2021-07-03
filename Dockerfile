@@ -32,9 +32,9 @@ RUN cd /tmp && \
     cp -r /var/task/lib/libproj* /var/task/lib64/ && ldconfig
 
 RUN cd /tmp && \
-    curl -L https://real-currents.s3.us-west-1.amazonaws.com/r/gdal-3.2.3.tar.gz | tar zxf - && \
-    cd gdal-3.2.3/ && \
-    export LD_RUN_PATH=/var/task && ./configure --prefix=/var/task --with-armadillo --with-pg=yes --with-proj=/var/task LDFLAGS="-Wl,-rpath -Wl,/var/task/lib64" && \
+    curl -L https://real-currents.s3-us-west-1.amazonaws.com/r/gdal-2.4.4.tar.gz | tar zxf - && \
+    cd gdal-2.4.4/ && \
+    export LD_RUN_PATH=/var/task && ./configure --prefix=/var/task --with-armadillo --with-pg=/usr/bin/pg_config --with-proj=/var/task LDFLAGS="-Wl,-rpath -Wl,/var/task/lib64" && \
     make -j4 && \
     make install && ldconfig
 
