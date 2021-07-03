@@ -1,5 +1,6 @@
 FROM docker.io/realcurrents/amzn-mro-3.5.1:origin as base
 
+ENV GITHUB_PAT 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
 ENV LD_LIBRARY_PATH /var/task/lib64:/var/task/lib:/usr/local/lib64:/usr/local/lib:/usr/lib64
 ENV PATH /var/task/adam/bin:/var/task/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ENV REXEC R
@@ -11,10 +12,10 @@ RUN yum -y update && \
     yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
     yum -y install https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm && \
     yum -y install https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm && \
-    yum install -y armadillo cmake dbus dbus-libs fontconfig-devel gmp-* libgit2-devel jq-devel v8-devel \
-        ImageMagick-c++-devel gdal geos geos-devel proj proj-devel proj-nad proj-epsg postgresql-devel \
-        cairo-devel libcairo libcurl libcurl-devel libgomp libSM libjpeg-turbo-devel libpng12 libXt m4 openssl-devel \
-        pandoc pango python-devel python3-pip readline-static tar which xz udunits2 udunits2-devel unzip && \
+    yum install -y armadillo-devel cmake dbus dbus-libs fontconfig-devel libcurl-devel gmp-* libgit2-devel jq-devel v8-devel \
+        ImageMagick-c++-devel gdal gdal-devel geos geos-devel proj proj-devel proj-nad proj-epsg postgresql-devel \
+        cairo-devel libcairo libcurl libcurl-devel libgomp jasper-devel libSM libpng12 libtiff-devel libsq3-devel libXt \
+        m4 openssl-devel pandoc pango python-devel python3-pip readline-static tar which xz udunits2 udunits2-devel unzip && \
     yum reinstall -y libpng libpng-devel zlib zlib-devel && ldconfig
 
 RUN cd /var/task && \
@@ -23,11 +24,19 @@ RUN cd /var/task && \
     cp /usr/lib64/libgmp.so.10 lib64/libgmp.so.3 && ldconfig
 
 RUN cd /tmp && \
-    curl -L https://real-currents.s3-us-west-1.amazonaws.com/r/gdal-2.4.4.tar.gz | tar zxf - && \
-    cd gdal-2.4.4/ && \
+    curl -L https://real-currents.s3-us-west-1.amazonaws.com/r/proj-8.1.0.tar.gz | tar zxf - && \
+    cd proj-8.1.0/ && \
     ./configure --prefix=/var/task && \
     make -j4 && \
-    make install
+    make install && \
+    cp -r /var/task/lib/libproj* /var/task/lib64/ && ldconfig
+
+RUN cd /tmp && \
+    curl -L https://real-currents.s3.us-west-1.amazonaws.com/r/gdal-3.2.3.tar.gz | tar zxf - && \
+    cd gdal-3.2.3/ && \
+    export LD_RUN_PATH=/var/task && ./configure --prefix=/var/task --with-armadillo --with-pg=yes --with-proj=/var/task LDFLAGS="-Wl,-rpath -Wl,/var/task/lib64" && \
+    make -j4 && \
+    make install && ldconfig
 
 RUN curl -LO https://github.com/Kitware/CMake/releases/download/v3.18.5/cmake-3.18.5-Linux-x86_64.tar.gz && \
     tar -xf cmake-3.18.5-Linux-x86_64.tar.gz && \
@@ -50,4 +59,4 @@ RUN curl -LO https://github.com/Kitware/CMake/releases/download/v3.18.5/cmake-3.
     ./configure --prefix=/usr/local && \
     make -j4 && \
     make install && \
-    cp -r /usr/local/lib/* /var/task/lib64/
+    cp -r /usr/local/lib/* /var/task/lib64/ && ldconfig
