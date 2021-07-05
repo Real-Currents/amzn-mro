@@ -13,7 +13,7 @@ RUN yum -y update && \
     yum -y install https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm && \
     yum -y install https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm && \
     yum install -y armadillo-devel cmake dbus dbus-libs fontconfig-devel libcurl-devel gmp-* libgit2-devel jq-devel v8-devel \
-        ImageMagick-c++-devel gdal gdal-devel geos geos-devel proj proj-devel proj-nad proj-epsg postgresql-devel \
+        cargo ImageMagick-c++-devel gdal gdal-devel geos geos-devel proj proj-devel proj-nad proj-epsg postgresql-devel \
         cairo-devel libcairo libcurl libcurl-devel libgomp jasper-devel libSM libpng12 libtiff-devel libsq3-devel libXt \
         m4 openssl-devel pandoc pango python-devel python3-pip readline-static tar which xz udunits2 udunits2-devel unzip && \
     yum reinstall -y libpng libpng-devel zlib zlib-devel && ldconfig
@@ -34,7 +34,7 @@ RUN cd /var/task && \
 RUN cd /tmp && \
     curl -L https://real-currents.s3-us-west-1.amazonaws.com/r/gdal-2.4.4.tar.gz | tar zxf - && \
     cd gdal-2.4.4/ && \
-    export LD_RUN_PATH=/var/task && ./configure --prefix=/var/task --with-armadillo --with-openjpeg --with-pg=/usr/bin/pg_config LDFLAGS="-Wl,-rpath -Wl,/var/task/lib64" && \
+    export LD_RUN_PATH=/var/task && ./configure --prefix=/var/task --with-armadillo LDFLAGS="-Wl,-rpath -Wl,/var/task" && \
     make -j4 && \
     make install && ldconfig
 
