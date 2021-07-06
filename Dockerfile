@@ -39,7 +39,7 @@ RUN cd /var/task && source /var/task/setup.sh && ldconfig && \
     echo -e '\nexport LC_ALL=C.UTF-8' >> ~/.bashrc && \
     echo -e '\nexport LANG=C.UTF-8' >> ~/.bashrc && \
     /var/task/bin/Rscript -e 'install.packages(c("curl", "httr", "Rcpp")); Sys.setenv(CURL_CA_BUNDLE="/var/task/lib64/R/lib/microsoft-r-cacert.pem")' && \
-    /var/task/bin/Rscript -e 'install.packages(c("rlang", "devtools", "jsonlite", "magick", "magrittr", "openxlsx", "remoter", "remotes", "reticulate", "rmarkdown", "rgdal", "rgeos", "sf", "sp", "stringi", "stringr", "tidyverse"));' && \
+    /var/task/bin/Rscript -e 'install.packages(c("akima", "ggplot2", "reshape2", "viridis", rlang", "devtools", "jsonlite", "magick", "magrittr", "openxlsx", "remoter", "remotes", "reticulate", "rmarkdown", "rgdal", "rgeos", "sf", "sp", "stringi", "stringr", "tidyverse"));' && \
     /var/task/bin/Rscript -e 'devtools::install_version("blogdown", version = "0.20", upgrade = FALSE); blogdown::install_hugo("0.48", extended = TRUE, force = TRUE, use_brew = FALSE);' && \
     cp /root/bin/hugo /var/task/bin/ && \
     rm /root/bin/hugo && \
