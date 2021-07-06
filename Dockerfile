@@ -1,6 +1,5 @@
 FROM docker.io/realcurrents/amzn-mro-3.5.1:origin as base
 
-ENV GITHUB_PAT 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
 ENV LD_LIBRARY_PATH /var/task/lib64:/var/task/lib:/usr/local/lib64:/usr/local/lib:/usr/lib64
 ENV PATH /var/task/adam/bin:/var/task/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ENV REXEC R
@@ -13,8 +12,8 @@ RUN yum -y update && \
     yum -y install https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm && \
     yum -y install https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm && \
     yum install -y armadillo-devel cmake dbus dbus-libs fontconfig-devel libcurl-devel gmp-* libgit2-devel jq-devel v8-devel \
-        cargo ImageMagick-c++-devel gdal gdal-devel geos geos-devel proj proj-devel proj-nad proj-epsg postgresql-devel \
-        cairo-devel libcurl libcurl-devel libgomp jasper-devel libSM libpng12 libtiff-devel libsq3-devel librsvg2-devel libwebp-devel libXt \
+        cairo-devel cargo ImageMagick-c++-devel gdal gdal-devel geos geos-devel proj proj-devel proj-nad proj-epsg postgresql-devel \
+        libcurl libcurl-devel libgomp jasper-devel libSM libjpeg-turbo-devel libpng12 libtiff-devel libsq3-devel librsvg2-devel libwebp-devel libXt \
         leptonica-devel m4 openssl-devel pandoc pango python-devel python3-pip readline-static tar tesseract-devel which xz udunits2 udunits2-devel unzip && \
     yum reinstall -y libpng libpng-devel zlib zlib-devel && ldconfig
 
@@ -22,14 +21,6 @@ RUN cd /var/task && \
     curl -o mro-3.5.1.zip https://real-currents.s3-us-west-1.amazonaws.com/r/mro-3.5.1.zip && \
     unzip -o mro-3.5.1.zip && rm mro-3.5.1.zip && source /var/task/setup.sh && \
     cp /usr/lib64/libgmp.so.10 lib64/libgmp.so.3 && ldconfig
-
-#RUN cd /tmp && \
-#    curl -L https://real-currents.s3-us-west-1.amazonaws.com/r/proj-8.1.0.tar.gz | tar zxf - && \
-#    cd proj-8.1.0/ && \
-#    ./configure --prefix=/var/task && \
-#    make -j4 && \
-#    make install && \
-#    cp -r /var/task/lib/libproj* /var/task/lib64/ && ldconfig
 
 RUN cd /tmp && \
     curl -L https://real-currents.s3-us-west-1.amazonaws.com/r/gdal-2.4.4.tar.gz | tar zxf - && \
@@ -59,4 +50,4 @@ RUN curl -LO https://github.com/Kitware/CMake/releases/download/v3.18.5/cmake-3.
     ./configure --prefix=/usr/local && \
     make -j4 && \
     make install && \
-    cp -r /usr/local/lib/* /var/task/lib64/ && ldconfig
+    cp -r /usr/local/lib/* /var/task/lib64/
