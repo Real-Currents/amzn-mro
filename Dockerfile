@@ -39,7 +39,7 @@ RUN cd /var/task && source /var/task/setup.sh && ldconfig && \
     echo -e '\nexport LC_ALL=C.UTF-8' >> ~/.bashrc && \
     echo -e '\nexport LANG=C.UTF-8' >> ~/.bashrc && \
     /var/task/bin/Rscript -e 'install.packages(c("curl", "httr", "Rcpp")); Sys.setenv(CURL_CA_BUNDLE="/var/task/lib64/R/lib/microsoft-r-cacert.pem")' && \
-    /var/task/bin/Rscript -e 'install.packages(c("akima", "ggplot2", "reshape2", "viridis", rlang", "devtools", "geojsonsf", "geoviz", "jsonlite", "magick", "magrittr", "openxlsx", "Rcpp", "RcppRedis", "raster", "remoter", "remotes", "reticulate", "rmarkdown", "rgdal", "rgeos", "slippymath", "sf", "sp", "stringi", "stringr", "tidyverse", "DT"));' && \
+    /var/task/bin/Rscript -e 'install.packages(c("akima", "ggplot2", "reshape2", "viridis", "rlang", "devtools", "geojsonsf", "geoviz", "jsonlite", "magick", "magrittr", "openxlsx", "Rcpp", "RcppRedis", "raster", "remoter", "remotes", "reticulate", "rmarkdown", "rgdal", "rgeos", "sf", "sp", "slippymath", "stringr", "tidyverse", "DT"));' && \
     /var/task/bin/Rscript -e 'devtools::install_version("blogdown", version = "0.20", upgrade = FALSE); blogdown::install_hugo("0.48", extended = TRUE, force = TRUE, use_brew = FALSE); devtools::install_version("rgl", version = "0.100.19", dependencies = FALSE); devtools::install_github("tylermorganwall/rayimage@7a9a138e10e19119c88e960f9cfb191d1fdae002"); devtools::install_github("tylermorganwall/terrainmeshr@e112055e47033508cc45c8246b8dc0a0e94920f7"); devtools::install_github("tylermorganwall/rayshader@d0c9bd94be95c44eff6e7d8da5eadff070dc11db");' && \
     cp /root/bin/hugo /var/task/bin/ && \
     rm /root/bin/hugo && \
