@@ -11,10 +11,12 @@ RUN yum -y update && \
     yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
     yum -y install https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm && \
     yum -y install https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm && \
-    yum install -y armadillo-devel cmake dbus dbus-libs fontconfig-devel libcurl-devel gmp-* libgit2-devel jq-devel v8-devel \
-        cairo-devel cargo ImageMagick-c++-devel gdal gdal-devel geos geos-devel proj proj-devel proj-nad proj-epsg postgresql-devel \
-        libcurl libcurl-devel libgomp jasper-devel libSM libjpeg-turbo-devel libpng12 libtiff-devel libsq3-devel librsvg2-devel libwebp-devel libXt \
-        leptonica-devel m4 openssl-devel pandoc pango python-devel python3-pip readline-static tar tesseract-devel which xz udunits2 udunits2-devel unzip && \
+    yum install -y armadillo cmake dbus dbus-libs fontconfig-devel gmp-* libgit2-devel jq-devel v8-devel \
+        ImageMagick-c++-devel gdal geos geos-devel proj proj-devel proj-nad proj-epsg postgresql-devel \
+        cairo-devel libcairo libcurl libcurl-devel libgomp jasper-devel libSM libjpeg-turbo-devel \
+        libpng12 libtiff-devel libsq3-devel librsvg2-devel libwebp-devel libXt \
+        leptonica-devel m4 openssl-devel pandoc pango python-devel python3-pip \
+        readline-static tar tesseract-devel which xz udunits2 udunits2-devel unzip && \
     yum reinstall -y libpng libpng-devel zlib zlib-devel && ldconfig
 
 RUN cd /var/task && \
@@ -25,9 +27,9 @@ RUN cd /var/task && \
 RUN cd /tmp && \
     curl -L https://real-currents.s3-us-west-1.amazonaws.com/r/gdal-2.4.4.tar.gz | tar zxf - && \
     cd gdal-2.4.4/ && \
-    export LD_RUN_PATH=/var/task && ./configure --prefix=/var/task --with-armadillo LDFLAGS="-Wl,-rpath -Wl,/var/task" && \
+    ./configure --prefix=/var/task && \
     make -j4 && \
-    make install && ldconfig
+    make install
 
 RUN curl -LO https://github.com/Kitware/CMake/releases/download/v3.18.5/cmake-3.18.5-Linux-x86_64.tar.gz && \
     tar -xf cmake-3.18.5-Linux-x86_64.tar.gz && \
