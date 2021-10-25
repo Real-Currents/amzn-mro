@@ -13,8 +13,9 @@ RUN cd /var/task && source /var/task/setup.sh && ldconfig && \
     echo -e '\nexport CURL_CA_BUNDLE=/var/task/lib64/R/lib/microsoft-r-cacert.pem' >> ~/.bashrc && \
     echo -e '\nexport LC_ALL=C.UTF-8' >> ~/.bashrc && \
     echo -e '\nexport LANG=C.UTF-8' >> ~/.bashrc && \
-    /var/task/bin/Rscript -e 'install.packages(c("curl", "httr", "Rcpp")); Sys.setenv(CURL_CA_BUNDLE="/var/task/lib64/R/lib/microsoft-r-cacert.pem")' && \
-    /var/task/bin/Rscript -e 'install.packages(c("rlang", "devtools", "geojsonsf", "geoviz", "jsonlite", "magick", "magrittr", "openxlsx", "Rcpp", "RcppRedis", "raster", "slippymath", "remoter", "remotes", "rgdal", "rgeos", "sf", "sp", "stringi", "stringr"));' && \
+    /var/task/bin/Rscript -e 'install.packages(c("curl", "httr", "Rcpp")); Sys.setenv(CURL_CA_BUNDLE="/var/task/lib64/R/lib/microsoft-r-cacert.pem")'
+
+RUN /var/task/bin/Rscript -e 'install.packages(c("rlang", "devtools", "geojsonsf", "geoviz", "jsonlite", "magick", "magrittr", "openxlsx", "Rcpp", "RcppRedis", "raster", "remoter", "remotes", "rgdal", "rgeos", "sf", "sp", "stringi", "stringr", "slippymath", "terra"));' && \
     /var/task/bin/Rscript -e 'remotes::install_cran("azuremlsdk"); azuremlsdk::install_azureml(envnam = "r-reticulate", conda_python_version = "3.5.3", restart_session = TRUE, remove_existing_env = FALSE); reticulate::use_python(python = "/var/task/adam/envs/r-reticulate/bin/python", required = TRUE); reticulate::use_condaenv(condaenv = "r-reticulate"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install azureml"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install azure-ml-api-sdk"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install azureml.core"); system("/var/task/adam/envs/r-reticulate/bin/python -m pip install --upgrade azureml-sdk[notebooks,contrib]"); save.image();'  &&\
     echo $(for rp in $RPROFILE; do echo 'load("/var/task/.RData")' >> $rp; done;) && \
     echo $(for rp in $RPROFILE; do echo 'reticulate::use_python(python = "/var/task/adam/envs/r-reticulate/bin/python", required = TRUE)' >> $rp; done;) && \
