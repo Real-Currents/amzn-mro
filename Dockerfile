@@ -58,7 +58,7 @@ RUN cd /var/task && \
     cp -r /usr/local/bin/* /var/task/bin/  && \
     cp -r /usr/local/lib/* /var/task/lib64/
 
-RUN /var/task/bin/Rscript -e 'install.packages("akima", "ggplot2", "reshape2", "viridis"); devtools::install_version("blogdown", version = "0.20", upgrade = FALSE); blogdown::install_hugo("0.48", extended = TRUE, force = TRUE, use_brew = FALSE); devtools::install_version("rgl", version = "0.100.19", dependencies = FALSE); devtools::install_github("tylermorganwall/rayimage@7a9a138e10e19119c88e960f9cfb191d1fdae002"); devtools::install_github("tylermorganwall/terrainmeshr@e112055e47033508cc45c8246b8dc0a0e94920f7"); devtools::install_github("tylermorganwall/rayshader@d0c9bd94be95c44eff6e7d8da5eadff070dc11db");' && \
+RUN /var/task/bin/Rscript -e 'install.packages(c("akima", "ggplot2", "reshape2", "viridis")); devtools::install_version("blogdown", version = "0.20", upgrade = FALSE); blogdown::install_hugo("0.48", extended = TRUE, force = TRUE, use_brew = FALSE); devtools::install_version("rgl", version = "0.100.19", dependencies = FALSE); devtools::install_github("tylermorganwall/rayimage@7a9a138e10e19119c88e960f9cfb191d1fdae002"); devtools::install_github("tylermorganwall/terrainmeshr@e112055e47033508cc45c8246b8dc0a0e94920f7"); devtools::install_github("tylermorganwall/rayshader@d0c9bd94be95c44eff6e7d8da5eadff070dc11db");' && \
     cp /root/bin/hugo /var/task/bin/ && \
     rm /root/bin/hugo
 
