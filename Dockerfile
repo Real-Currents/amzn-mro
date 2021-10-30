@@ -10,7 +10,7 @@
 #
 #RUN cd /var/task && source /var/task/setup.sh && ldconfig && \
 #    export RPROFILE="$(echo $(/var/task/bin/R -f /var/task/setup.R  | grep '/Rprofile') | grep -o '[A-Z|a-z|\/][A-Z|a-z|0-9|\:|\/|\.|\_]*')" && \
-#    echo $(for rp in $RPROFILE; do echo 'options(repos = list(CRAN="http://cran.rstudio.com/"))' >> $rp; done;) && \
+#    echo $(for rp in $RPROFILE; do echo 'options(repos = list(MRAN = "https://mran.microsoft.com/snapshot/2018-08-01", CRAN = "http://cran.rstudio.com/"))' >> $rp; done;) && \
 #    Rscript -e 'remove.packages(c("curl","httr"));' && \
 #    echo -e '\nexport CURL_CA_BUNDLE=/var/task/lib64/R/lib/microsoft-r-cacert.pem' >> ~/.bashrc && \
 #    echo -e '\nexport LC_ALL=C.UTF-8' >> ~/.bashrc && \
