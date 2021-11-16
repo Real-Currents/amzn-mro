@@ -12,7 +12,7 @@ RUN yum -y update && \
     yum -y install https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm && \
     yum -y install https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm && \
     yum install -y armadillo cmake dbus dbus-libs fontconfig-devel gmp-* libgit2-devel jq-devel v8-devel \
-        ImageMagick-c++-devel gdal geos geos-devel proj proj-devel proj-nad proj-epsg postgresql-devel \
+        ImageMagick-c++-devel geos geos-devel proj proj-devel proj-nad proj-epsg postgresql-devel \
         cairo-devel libcairo libcurl libcurl-devel libgomp libSM libjpeg-turbo-devel libpng12 libXt m4 openssl-devel \
         pandoc pango python-devel python3-pip readline-static tar which xz udunits2 udunits2-devel unzip && \
     yum reinstall -y libpng libpng-devel zlib zlib-devel && ldconfig
@@ -25,9 +25,11 @@ RUN cd /var/task && \
 RUN cd /tmp && \
     curl -L https://real-currents.s3-us-west-1.amazonaws.com/r/gdal-2.4.4.tar.gz | tar zxf - && \
     cd gdal-2.4.4/ && \
-    ./configure --prefix=/var/task && \
+    ./configure --prefix=/var/task --without-ld-shared --disable-shared --enable-static && \
     make -j4 && \
-    make install
+    make install && ldconfig && \
+    ./configure --prefix=/usr --without-ld-shared --disable-shared --enable-static && \
+    make install && ldconfig
 
 RUN curl -LO https://github.com/Kitware/CMake/releases/download/v3.18.5/cmake-3.18.5-Linux-x86_64.tar.gz && \
     tar -xf cmake-3.18.5-Linux-x86_64.tar.gz && \
@@ -44,10 +46,4 @@ RUN curl -LO https://github.com/Kitware/CMake/releases/download/v3.18.5/cmake-3.
     echo -e 'export LD_LIBRARY_PATH="/var/task/lib64:/var/task/lib"' >> ~/.bashrc && \
     conda create -y -n r-reticulate python=3.5.4 && \
     cd /var/task/adam/envs/r-reticulate/lib && mv libz.so.1 libz.so.1.old && ln -s /var/task/adam/lib/libz.so.1 libz.so.1 && \
-    source activate r-reticulate && cd /tmp && \
-    curl -L https://real-currents.s3-us-west-1.amazonaws.com/r/gdal-2.4.4.tar.gz | tar zxf - && \
-    cd gdal-2.4.4/ && \
-    ./configure --prefix=/usr/local && \
-    make -j4 && \
-    make install && \
-    cp -r /usr/local/lib/* /var/task/lib64/
+    source activate r-reticulate
