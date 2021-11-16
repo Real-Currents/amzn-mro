@@ -13,8 +13,10 @@ RUN yum -y update && \
     yum -y install https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm && \
     yum install -y armadillo cmake dbus dbus-libs fontconfig-devel gmp-* libgit2-devel jq-devel v8-devel \
         ImageMagick-c++-devel geos geos-devel proj proj-devel proj-nad proj-epsg postgresql-devel \
-        cairo-devel libcairo libcurl libcurl-devel libgomp libSM libjpeg-turbo-devel libpng12 libXt m4 openssl-devel \
-        pandoc pango python-devel python3-pip readline-static tar which xz udunits2 udunits2-devel unzip && \
+        cairo-devel libcairo libcurl libcurl-devel libgomp jasper-devel libSM libjpeg-turbo-devel \
+        libpng12 libtiff-devel libsq3-devel librsvg2-devel libwebp-devel libXt \
+        leptonica-devel m4 openssl-devel pandoc pango python-devel python3-pip \
+        readline-static tar tesseract-devel which xz udunits2 udunits2-devel unzip && \
     yum reinstall -y libpng libpng-devel zlib zlib-devel && ldconfig
 
 RUN cd /var/task && \
